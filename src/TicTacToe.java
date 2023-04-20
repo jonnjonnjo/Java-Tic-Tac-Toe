@@ -44,25 +44,69 @@ public class TicTacToe implements ActionListener
             buttons[i].setFont(new Font("Comic Sans",Font.BOLD,120));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener((this));
+
         }
 
         titlePanel.add(textField);
         frame.add(titlePanel,BorderLayout.NORTH);
         frame.add(buttonPanel);
 
-        
+
 
     }
 
 
     public void actionPerformed(ActionEvent e)
     {
+        for(int i =0;i < 9;i++)
+        {
+            if(e.getSource() == buttons[i])
+            {
+                if(player1Turn)
+                {
+                    if(buttons[i].getText() == "")
+                    {
+                        buttons[i].setForeground((Color.blue));
+                        buttons[i].setText("X");
+                        player1Turn = !player1Turn;
+                        textField.setText("O Turn");
+                    }
+                }else
+                {
+                    if(buttons[i].getText() == "")
+                    {
+                        buttons[i].setForeground(Color.red);
+                        buttons[i].setText("O");
+                        player1Turn = !player1Turn;
+                        textField.setText("X Turn");
+                    }
+                }
+            }
+        }
+
+        check();
 
     }
 
     public void firstTurn()
     {
+        try
+        {
+            Thread.sleep(1000);
+        }catch (Exception e)
+        {
 
+        }
+
+        if(random.nextInt(2) == 0)
+        {
+            player1Turn = true;
+            textField.setText("X turn");
+        }else
+        {
+            player1Turn = false;
+            textField.setText("O turn");
+        }
     }
 
     public void check()
