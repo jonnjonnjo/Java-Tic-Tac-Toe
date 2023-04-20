@@ -1,5 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.text.TextAction;
+
 import java.util.*;
 import java.awt.event.*;
 import java.io.*;
@@ -15,12 +17,14 @@ public class TicTacToe implements ActionListener
     JPanel titlePanel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JLabel textField = new JLabel();
-    JButton[] buttons = new JButton[9];
+    ColorfulIconButton [] buttons = new ColorfulIconButton[9];
     boolean player1Turn;
     boolean finished = false;
     Font myFont = null;
     AudioInputStream audioInputStream = null;
     Clip clip;
+
+    char[] text = new char[9];
 
 
 
@@ -81,13 +85,13 @@ public class TicTacToe implements ActionListener
 
         for(int i = 0; i < 9;i++)
         {
-            buttons[i] = new JButton();
+            buttons[i] = new ColorfulIconButton();
             buttonPanel.add(buttons[i]);
             buttons[i].setFont(new Font("Comic Sans",Font.BOLD,120));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener((this));
-           // buttons[i].setIcon(buttonIcon[i]);
-
+            buttons[i].setEnabled(false);
+            text[i] = ' ';
             
         }
 
@@ -109,10 +113,10 @@ public class TicTacToe implements ActionListener
             {
                 if(player1Turn)
                 {
-                    if(buttons[i].getText() == "")
+                    if(text[i]== ' ')
                     {
-                        buttons[i].setForeground((Color.blue));
                        // buttons[i].setText("X");
+                        text[i] = 'X';
                         int buttonWidth = buttons[i].getWidth();
                         int buttonHeight = buttons[i].getHeight();
                         Image temp = buttonIcon[1].getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
@@ -124,10 +128,15 @@ public class TicTacToe implements ActionListener
                     }
                 }else
                 {
-                    if(buttons[i].getText() == "")
+                    if(text[i] == ' ')
                     {
-                        buttons[i].setForeground(Color.red);
-                        buttons[i].setText("O");
+                        text[i] = 'O';
+                        int buttonWidth = buttons[i].getWidth();
+                        int buttonHeight = buttons[i].getHeight();
+                        Image temp = buttonIcon[0].getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+                        ImageIcon temp2 = new ImageIcon(temp);
+                        buttons[i].setForeground(null);
+                        buttons[i].setIcon(temp2);
                         player1Turn = !player1Turn;
                         textField.setText("X Turn");
                     }
@@ -157,6 +166,8 @@ public class TicTacToe implements ActionListener
             player1Turn = false;
             textField.setText("O   turn");
         }
+
+        for(int i =0;i< 9;i++) buttons[i].setEnabled(true);
     }
 
     public void check()
@@ -164,10 +175,10 @@ public class TicTacToe implements ActionListener
         // check horizontal 
         for(int i = 0;i < 9;i += 3)
         {
-            if(buttons[i].getText() == buttons[i+1].getText() && buttons[i+1].getText() ==  buttons[i+2].getText() && buttons[i].getText() != "")
+            if(text[i] == text[i+1] && text[i+1] ==  text[i+2]&& text[i] != ' ')
             {
-                textField.setText(buttons[i].getText() + "   Wins");
-                if(buttons[i].getText() == "X")
+                textField.setText(text[i]+ "   Wins");
+                if(text[i]== 'X')
                 {   
                     xWins(i,i+1,i+2);
                 }else oWins(i,i+1,i+2);
@@ -179,11 +190,11 @@ public class TicTacToe implements ActionListener
 
         for(int i = 0;i < 3;i++)
         {
-            if(buttons[i].getText() == buttons[i+3].getText() && buttons[i+3].getText() == buttons[i+6].getText()&& buttons[i].getText() != "")
+            if(text[i] == text[i+3] && text[i+3] == text[i+6]&& text[i] != ' ')
             {
-                textField.setText(buttons[i].getText() + "   Wins");
+                textField.setText(text[i] + "   Wins");
 
-                if(buttons[i].getText() == "X")
+                if(text[i] == 'X')
                 {   
                     xWins(i,i+3,i+6);
                 }else oWins(i,i+3,i+6);
@@ -194,10 +205,10 @@ public class TicTacToe implements ActionListener
 
         // check for the diagonal
 
-        if(buttons[0].getText() == buttons[4].getText() && buttons[0].getText() == buttons[8].getText()&& buttons[0].getText() != "")
+        if(text[0] == text[4] && text[0] == text[8]&& text[0] != ' ')
         {
-            textField.setText(buttons[0].getText() + "   Wins");
-            if(buttons[0].getText() == "X")
+            textField.setText(text[0] + "   Wins");
+            if(text[0]== 'X')
             {   
                 xWins(0,4,8);
             }else oWins(0,4,8);
@@ -205,11 +216,11 @@ public class TicTacToe implements ActionListener
             finished = true;
         }
     
-        if(buttons[2].getText() == buttons[4].getText() && buttons[6].getText() == buttons[2].getText()&& buttons[2].getText() != "")
+        if(text[2] == text[4] && text[6] == text[2]&& text[2] != ' ')
         {
-            textField.setText(buttons[0].getText() + "   Wins");
+            textField.setText(text[0] + "   Wins");
 
-            if(buttons[2].getText() == "X")
+            if(text[2] == 'X')
             {   
                 xWins(2,4,6);
             }else oWins(2,4,6);
@@ -220,7 +231,7 @@ public class TicTacToe implements ActionListener
         int cnt = 0;
         for(int i =0;i < 9;i++)
         {
-            if(buttons[i].getText() != "") cnt++;
+            if(text[i] != ' ') cnt++;
         }
 
         if(cnt == 9 && !finished)
@@ -234,30 +245,40 @@ public class TicTacToe implements ActionListener
 
     public void xWins(int a,int b, int c)
     {
-        buttons[a].setBackground(Color.green);
-        buttons[b].setBackground(Color.green);
-        buttons[c].setBackground(Color.green);
+        int buttonWidth = buttons[a].getWidth();
+        int buttonHeight = buttons[a].getHeight();
+        Image temp = buttonIcon[4].getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+        ImageIcon temp2 = new ImageIcon(temp);
+        buttons[a].setForeground(null);
+        buttons[a].setIcon(temp2);
+        buttons[b].setIcon(temp2);
+        buttons[c].setIcon(temp2);
+        textField.setText("X   Wins");
+
 
         for(int i = 0;i < 9;i++)
         {
             buttons[i].setEnabled(false);
         }
 
-        textField.setText("X   Wins");
 
     }
 
     public void oWins(int a,int b, int c)
     {
-        buttons[a].setBackground(Color.green);
-        buttons[b].setBackground(Color.green);
-        buttons[c].setBackground(Color.green);
 
         for(int i = 0;i < 9;i++)
         {
             buttons[i].setEnabled(false);
         }
-
+        int buttonWidth = buttons[a].getWidth();
+        int buttonHeight = buttons[a].getHeight();
+        Image temp = buttonIcon[3].getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+        ImageIcon temp2 = new ImageIcon(temp);
+        buttons[a].setForeground(null);
+        buttons[a].setIcon(temp2);
+        buttons[b].setIcon(temp2);
+        buttons[c].setIcon(temp2);
         textField.setText("O   Wins");       
         
     }
