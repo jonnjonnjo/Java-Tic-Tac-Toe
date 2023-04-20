@@ -52,6 +52,7 @@ public class TicTacToe implements ActionListener
         frame.add(buttonPanel);
 
 
+        firstTurn();
 
     }
 
@@ -111,6 +112,37 @@ public class TicTacToe implements ActionListener
 
     public void check()
     {
+        // check horizontal 
+        for(int i = 0;i < 9;i += 3)
+        {
+            if(buttons[i].getText() == buttons[i+1].getText() && buttons[i+1].getText() ==  buttons[i+2].getText() && buttons[i].getText() != "")
+            {
+                textField.setText(buttons[i].getText() + " Wins");
+            }
+        }
+
+        // check vertical
+
+        for(int i = 0;i < 3;i++)
+        {
+            if(buttons[i].getText() == buttons[i+3].getText() && buttons[i+3].getText() == buttons[i+6].getText()&& buttons[i].getText() != "")
+            {
+                textField.setText(buttons[i].getText() + " Wins");
+            }
+        }
+
+        // check for the diagonal
+
+        if(buttons[0].getText() == buttons[4].getText() && buttons[0].getText() == buttons[8].getText()&& buttons[0].getText() != "")
+        {
+            textField.setText(buttons[0].getText() + " Wins");
+        }
+    
+        if(buttons[2].getText() == buttons[4].getText() && buttons[6].getText() == buttons[8].getText()&& buttons[2].getText() != "")
+        {
+            textField.setText(buttons[0].getText() + " Wins");
+        }
+
 
     }
 
