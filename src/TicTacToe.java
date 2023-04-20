@@ -3,6 +3,9 @@ import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
 import java.io.*;
+import javax.sound.sampled.*;
+import javax.imageio.*;
+import java.awt.image.*;
 
 
 public class TicTacToe implements ActionListener
@@ -16,7 +19,11 @@ public class TicTacToe implements ActionListener
     boolean player1Turn;
     boolean finished = false;
     Font myFont = null;
+    AudioInputStream audioInputStream = null;
+    Clip clip;
 
+    BufferedImage buffButtonIcon = null;
+    ImageIcon buttonIcon = null;
 
 
     TicTacToe()
@@ -26,10 +33,16 @@ public class TicTacToe implements ActionListener
             myFont = Font.createFont(Font.TRUETYPE_FONT,new File("../font/ARCADECLASSIC.TTF"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(myFont);
+            audioInputStream = AudioSystem.getAudioInputStream(new File("../music/intro.wav"));
+            clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
         }catch(Exception e)
         {
-    
         }
+        
+;
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,800);
@@ -50,6 +63,13 @@ public class TicTacToe implements ActionListener
         buttonPanel.setLayout(new GridLayout(3,3));
         buttonPanel.setBackground(Color.red);
 
+        try{
+        buffButtonIcon = ImageIO.read(new File("../img/default.png"));
+        buttonIcon = new ImageIcon(buffButtonIcon);
+        } catch(Exception e)
+        {
+
+        }
 
 
         for(int i = 0; i < 9;i++)
@@ -59,7 +79,8 @@ public class TicTacToe implements ActionListener
             buttons[i].setFont(new Font("Comic Sans",Font.BOLD,120));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener((this));
-
+           // buttons[i].setIcon(buttonIcon);
+            
         }
 
         titlePanel.add(textField);
@@ -101,7 +122,6 @@ public class TicTacToe implements ActionListener
         }
 
         check();
-
     }
 
     public void firstTurn()
@@ -177,8 +197,8 @@ public class TicTacToe implements ActionListener
 
             if(buttons[2].getText() == "X")
             {   
-                xWins(2,4,7);
-            }else oWins(2,4,7);
+                xWins(2,4,6);
+            }else oWins(2,4,6);
 
             finished = true;
         }
