@@ -13,7 +13,7 @@ import java.awt.image.*;
 public class TicTacToe implements ActionListener
 {
     Random random = new Random();
-    JFrame frame = new JFrame();
+    JFrame frame = new JFrame("Jon's TicTacToe");
     JPanel titlePanel = new JPanel();
     JPanel buttonPanel = new JPanel();
     JLabel textField = new JLabel();
