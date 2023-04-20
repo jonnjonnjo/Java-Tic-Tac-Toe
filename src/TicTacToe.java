@@ -162,6 +162,6 @@ public class TicTacToe implements ActionListener
     
     public static void main(String[] args)
     {
-        TicTacToe m = new TicTacToe();
+        TicTacToe t = new TicTacToe();
     }
 }
