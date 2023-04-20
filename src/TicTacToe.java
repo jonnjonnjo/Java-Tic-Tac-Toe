@@ -22,8 +22,10 @@ public class TicTacToe implements ActionListener
     AudioInputStream audioInputStream = null;
     Clip clip;
 
-    BufferedImage buffButtonIcon = null;
-    ImageIcon buttonIcon = null;
+
+
+    BufferedImage[] bufferedImage = new BufferedImage[5];
+    ImageIcon[] buttonIcon = new ImageIcon[5];
 
 
     TicTacToe()
@@ -38,11 +40,22 @@ public class TicTacToe implements ActionListener
             clip.open(audioInputStream);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
+
+
+            bufferedImage[0] = ImageIO.read(new File("../img/blueo.png"));
+            buttonIcon[0] = new ImageIcon(bufferedImage[0]);
+            bufferedImage[1] = ImageIO.read(new File("../img/bluex.PNG"));
+            buttonIcon[1] = new ImageIcon(bufferedImage[1]);
+            bufferedImage[2] = ImageIO.read(new File("../img/default.PNG"));
+            buttonIcon[2] = new ImageIcon(bufferedImage[2]);
+            bufferedImage[3] = ImageIO.read(new File("../img/greeno.PNG"));
+            buttonIcon[3] = new ImageIcon(bufferedImage[3]);
+            bufferedImage[4] = ImageIO.read(new File("../img/greenx.PNG"));
+            buttonIcon[4] = new ImageIcon(bufferedImage[4]);
         }catch(Exception e)
         {
         }
         
-;
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,800);
@@ -63,13 +76,7 @@ public class TicTacToe implements ActionListener
         buttonPanel.setLayout(new GridLayout(3,3));
         buttonPanel.setBackground(Color.red);
 
-        try{
-        buffButtonIcon = ImageIO.read(new File("../img/default.png"));
-        buttonIcon = new ImageIcon(buffButtonIcon);
-        } catch(Exception e)
-        {
 
-        }
 
 
         for(int i = 0; i < 9;i++)
@@ -79,7 +86,8 @@ public class TicTacToe implements ActionListener
             buttons[i].setFont(new Font("Comic Sans",Font.BOLD,120));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener((this));
-           // buttons[i].setIcon(buttonIcon);
+           // buttons[i].setIcon(buttonIcon[i]);
+
             
         }
 
@@ -104,7 +112,13 @@ public class TicTacToe implements ActionListener
                     if(buttons[i].getText() == "")
                     {
                         buttons[i].setForeground((Color.blue));
-                        buttons[i].setText("X");
+                       // buttons[i].setText("X");
+                        int buttonWidth = buttons[i].getWidth();
+                        int buttonHeight = buttons[i].getHeight();
+                        Image temp = buttonIcon[1].getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH);
+                        ImageIcon temp2 = new ImageIcon(temp);
+                        buttons[i].setForeground(null);
+                        buttons[i].setIcon(temp2);
                         player1Turn = !player1Turn;
                         textField.setText("O Turn");
                     }
