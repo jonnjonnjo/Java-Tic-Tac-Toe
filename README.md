@@ -15,3 +15,7 @@ Here's my repo containing code about my Java's tictactoe game
  Note that the game only can be played once everytime it runned. I still hasn't add the retry feature in this game.
 
  ![Gameplay](img/forreadme.PNG)
+ 
+ 
+ # Source of the Music, Font, and Icon
+ I forgot about the source of all of them and I'm also too lazy to track them one by one hehe.
