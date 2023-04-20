@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
+import java.io.*;
 
 
 public class TicTacToe implements ActionListener
@@ -14,11 +15,22 @@ public class TicTacToe implements ActionListener
     JButton[] buttons = new JButton[9];
     boolean player1Turn;
     boolean finished = false;
+    Font myFont = null;
 
 
 
     TicTacToe()
     {
+        try
+        {
+            myFont = Font.createFont(Font.TRUETYPE_FONT,new File("../font/ARCADECLASSIC.TTF"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(myFont);
+        }catch(Exception e)
+        {
+    
+        }
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800,800);
         frame.getContentPane().setBackground(new Color(50,100,150));
@@ -27,9 +39,9 @@ public class TicTacToe implements ActionListener
 
         textField.setBackground(new Color(150,100,50));
         textField.setForeground(new Color(25,25,25));
-        textField.setFont(new Font("Times New Roman", Font.BOLD,75));
+        textField.setFont(myFont.deriveFont(Font.BOLD,75));
         textField.setHorizontalAlignment((JLabel.CENTER));
-        textField.setText("Tic-Tac-TOD");
+        textField.setText("Tic Tac Toe");
         textField.setOpaque(true);
 
         titlePanel.setLayout(new BorderLayout());
@@ -37,6 +49,8 @@ public class TicTacToe implements ActionListener
 
         buttonPanel.setLayout(new GridLayout(3,3));
         buttonPanel.setBackground(Color.red);
+
+
 
         for(int i = 0; i < 9;i++)
         {
@@ -94,7 +108,7 @@ public class TicTacToe implements ActionListener
     {
         try
         {
-            Thread.sleep(1000);
+            Thread.sleep(2000 );
         }catch (Exception e)
         {
 
@@ -103,11 +117,11 @@ public class TicTacToe implements ActionListener
         if(random.nextInt(2) == 0)
         {
             player1Turn = true;
-            textField.setText("X turn");
+            textField.setText("X   turn");
         }else
         {
             player1Turn = false;
-            textField.setText("O turn");
+            textField.setText("O   turn");
         }
     }
 
@@ -118,7 +132,7 @@ public class TicTacToe implements ActionListener
         {
             if(buttons[i].getText() == buttons[i+1].getText() && buttons[i+1].getText() ==  buttons[i+2].getText() && buttons[i].getText() != "")
             {
-                textField.setText(buttons[i].getText() + " Wins");
+                textField.setText(buttons[i].getText() + "   Wins");
                 if(buttons[i].getText() == "X")
                 {   
                     xWins(i,i+1,i+2);
@@ -133,7 +147,7 @@ public class TicTacToe implements ActionListener
         {
             if(buttons[i].getText() == buttons[i+3].getText() && buttons[i+3].getText() == buttons[i+6].getText()&& buttons[i].getText() != "")
             {
-                textField.setText(buttons[i].getText() + " Wins");
+                textField.setText(buttons[i].getText() + "   Wins");
 
                 if(buttons[i].getText() == "X")
                 {   
@@ -148,7 +162,7 @@ public class TicTacToe implements ActionListener
 
         if(buttons[0].getText() == buttons[4].getText() && buttons[0].getText() == buttons[8].getText()&& buttons[0].getText() != "")
         {
-            textField.setText(buttons[0].getText() + " Wins");
+            textField.setText(buttons[0].getText() + "   Wins");
             if(buttons[0].getText() == "X")
             {   
                 xWins(0,4,8);
@@ -159,7 +173,7 @@ public class TicTacToe implements ActionListener
     
         if(buttons[2].getText() == buttons[4].getText() && buttons[6].getText() == buttons[2].getText()&& buttons[2].getText() != "")
         {
-            textField.setText(buttons[0].getText() + " Wins");
+            textField.setText(buttons[0].getText() + "   Wins");
 
             if(buttons[2].getText() == "X")
             {   
@@ -195,7 +209,7 @@ public class TicTacToe implements ActionListener
             buttons[i].setEnabled(false);
         }
 
-        textField.setText("X Wins");
+        textField.setText("X   Wins");
 
     }
 
@@ -210,7 +224,7 @@ public class TicTacToe implements ActionListener
             buttons[i].setEnabled(false);
         }
 
-        textField.setText("O Wins");       
+        textField.setText("O   Wins");       
         
     }
 
